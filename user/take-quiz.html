@@ -45,14 +45,14 @@
 
       for (var question of questions) {
         var content = `
-          <div>
+          <div class="answers">
             <p><b>`+ question.question_name+`<b></p>
            `;
         var options = question.options;
         for (var oIndex in options) {
           content += `
             <div class="form-check">
-              <input class="form-check-input answers" value="`+options[oIndex]+`" type="radio" name="q`+ question.question_id +`" id="q`+ question.question_id + oIndex+`" required>
+              <input class="form-check-input" value="`+options[oIndex]+`" type="radio" name="q`+ question.question_id +`" id="q`+ question.question_id + oIndex+`">
               <label class="form-check-label" for="q`+ question.question_id + oIndex+`">
                 `+options[oIndex]+`
               </label>
@@ -87,36 +87,49 @@
       if (distance < 0) {
         clearInterval(x);
         document.getElementById("timer").innerHTML = "EXPIRED";
+        assessQuiz();
       }
     }
 
     function submitQuiz(e) {
       e.preventDefault();
       if (confirm('you sure?')) {
-        var radios = document.getElementsByClassName("answers");
-        var answers = [];
-
-         for( i = 0; i < radios.length; i++ ) {
-            if( radios[i].checked ) {
-              answers.push(radios[i].value);
-            }
-          }
-
-          axios({
-            method: 'post',
-            url: backend_host + 'takeQuiz/' + userId + "/" + sectionId,
-            data: {
-              "answers" : answers
-            },
-          })
-          .then(function (response) {
-            if (quizType == "Ungraded") {
-              window.location.href = "attempt.html?id=" + response.data.data.id;
-            }else {
-              window.location.href = "quiz.html?id=" + sectionId;
-            }
-          });
+        assessQuiz();
       }
+    }
+
+    function assessQuiz() {
+      var radioDiv = document.getElementsByClassName("answers");
+      var answers = [];
+      for( i = 0; i < radioDiv.length; i++ ) {
+        var answered = false;
+        var radios = radioDiv[i].getElementsByTagName('input');
+        for(radio of radios){
+          if( radio.checked ) {
+            answers.push(radio.value);
+            answered = true;
+            break;
+          }
+        }
+        if(!answered){
+          answers.push("");
+        }
+      }
+
+      axios({
+        method: 'post',
+        url: backend_host + 'takeQuiz/' + userId + "/" + sectionId,
+        data: {
+          "answers" : answers
+        },
+      })
+      .then(function (response) {
+        if (quizType == "Ungraded") {
+          window.location.href = "attempt.html?id=" + response.data.data.id;
+        }else {
+          window.location.href = "quiz.html?id=" + sectionId;
+        }
+      });
     }
   </script>
 </head>
@@ -127,7 +140,7 @@
     <form id="quiz" onsubmit="submitQuiz(event)">
       <div id="questions">
       </div>
-      <input type="submit" name="submit" class="btn btn-primary" value="Submit">
+      <input type="submit" class="btn btn-primary" value="Submit">
     </form>
   </div>
 </body>
