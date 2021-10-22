@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>
+    One Stop Learning
+  </title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  <!-- JQuery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <!-- axios -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <!-- Common Script -->
+  <script src="../js/common.js"></script>
+  <script>
+    var urlObject = new URL(document.location.href);
+    var params = urlObject.searchParams;
+    var sectionId = params.get("id");
+    const userId = localStorage.getItem('userId');
+    var x;
+    var quizType;
+
+    axios({
+      method: 'get',
+      url: backend_host + 'viewQuiz/' + userId + "/" + sectionId
+    })
+    .then(function (response) {
+      var quiz = response.data.data;
+      console.log(quiz);
+
+      document.getElementById('quizTitle').innerText = quiz.section.name;
+      quizType = quiz.quiz_type;
+
+      var countDownDate = new Date().getTime()+ (quiz.quiz_duration*60000);
+
+      x = setInterval(countDown, 1000, countDownDate);
+
+      var questions = quiz.question;
+
+      for (var question of questions) {
+        var content = `
+          <div class="answers">
+            <p><b>`+ question.question_name+`<b></p>
+           `;
+        var options = question.options;
+        for (var oIndex in options) {
+          content += `
+            <div class="form-check">
+              <input class="form-check-input" value="`+options[oIndex]+`" type="radio" name="q`+ question.question_id +`" id="q`+ question.question_id + oIndex+`">
+              <label class="form-check-label" for="q`+ question.question_id + oIndex+`">
+                `+options[oIndex]+`
+              </label>
+            </div>
+          `;
+        }
+
+        content += ` 
+          </div>
+        `;
+        document.getElementById('questions').innerHTML += content;
+      }
+    });
+
+
+    function countDown(countDownDate) {
+      // Get today's date and time
+      var now = new Date().getTime();
+
+      // Find the distance between now and the count down date
+      var distance = countDownDate - now;
+
+      // Time calculations for days, hours, minutes and seconds
+      var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      // Display the result in the element with id="timer"
+      document.getElementById("timer").innerHTML =  hours + "h " + minutes + "m " + seconds + "s ";
+
+      // If the count down is finished, write some text
+      if (distance < 0) {
+        clearInterval(x);
+        document.getElementById("timer").innerHTML = "EXPIRED";
+        assessQuiz();
+      }
+    }
+
+    function submitQuiz(e) {
+      e.preventDefault();
+      if (confirm('you sure?')) {
+        assessQuiz();
+      }
+    }
+
+    function assessQuiz() {
+      var radioDiv = document.getElementsByClassName("answers");
+      var answers = [];
+      for( i = 0; i < radioDiv.length; i++ ) {
+        var answered = false;
+        var radios = radioDiv[i].getElementsByTagName('input');
+        for(radio of radios){
+          if( radio.checked ) {
+            answers.push(radio.value);
+            answered = true;
+            break;
+          }
+        }
+        if(!answered){
+          answers.push("");
+        }
+      }
+
+      axios({
+        method: 'post',
+        url: backend_host + 'takeQuiz/' + userId + "/" + sectionId,
+        data: {
+          "answers" : answers
+        },
+      })
+      .then(function (response) {
+        if (quizType == "Ungraded") {
+          window.location.href = "attempt.html?id=" + response.data.data.id;
+        }else {
+          window.location.href = "quiz.html?id=" + sectionId;
+        }
+      });
+    }
+  </script>
+</head>
+<body>
+  <h3>Quiz for <span id='quizTitle'></span></h3>
+  <p id="timer"></p>
+  <div>
+    <form id="quiz" onsubmit="submitQuiz(event)">
+      <div id="questions">
+      </div>
+      <input type="submit" class="btn btn-primary" value="Submit">
+    </form>
+  </div>
+</body>
+</html>
