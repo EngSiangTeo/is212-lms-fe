@@ -20,13 +20,14 @@
     function setUser(role, userId) {
       localStorage.setItem('userId', userId);
       if (role == 'user') {
-        window.location.href = "./user/view_course?id=1";
+        window.location.href = "./user/all-course.html";
       }
     }
   </script>
 </head>
 <body>
   <h1></h1>
+  <button class="btn btn-primary" onclick="setUser('user',5)">Set Login Role as Learner [ID: 5]</button>
   <button class="btn btn-primary" onclick="setUser('user',6)">Set Login Role as Learner [ID: 6]</button>
 </body>
 </html>
