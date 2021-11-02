@@ -47,7 +47,7 @@
       for (var question of questions) {
         var content = `
           <div class="answers">
-            <p><b>`+ question.question_name+`<b></p>
+            <p>Question: <b>`+ question.question_name+`<b></p>
            `;
         var options = question.options;
         for (var oIndex in options) {
@@ -63,6 +63,7 @@
 
         content += ` 
           </div>
+          <hr>
         `;
         document.getElementById('questions').innerHTML += content;
       }
@@ -158,14 +159,17 @@
       </div>
     </div>
   </nav>
-  <h3>Quiz for <span id='quizTitle'></span></h3>
-  <p id="timer"></p>
-  <div>
-    <form id="quiz" onsubmit="submitQuiz(event)">
-      <div id="questions">
-      </div>
-      <input type="submit" class="btn btn-primary" value="Submit">
-    </form>
+  <div class="container-fluid" style="margin: 20px;">
+    <h3>Quiz for <span id='quizTitle'></span></h3>
+    <p id="timer"></p>
+    <hr>
+    <div>
+      <form id="quiz" onsubmit="submitQuiz(event)">
+        <div id="questions">
+        </div>
+        <input type="submit" class="btn btn-primary" value="Submit">
+      </form>
+    </div>
   </div>
 </body>
 </html>

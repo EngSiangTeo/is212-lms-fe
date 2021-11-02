@@ -50,7 +50,7 @@
           courseClassBody += `          <div class="row">`;
           courseClassBody += `            <div class="btn-group col-md-12">`;
           if (section.quiz === null) {
-            courseClassBody += `              <a href="#" class="btn btn-outline-primary col-md-6">Create Quiz</a>`;
+            courseClassBody += `              <a href="create-quiz.html?id=`+section.id+`&name=`+section.name+`" class="btn btn-outline-primary col-md-6">Create Quiz</a>`;
           } else {
             courseClassBody += `              <a href="#" class="btn btn-outline-secondary col-md-6">Edit Quiz</a>`;
           }
@@ -81,10 +81,10 @@
         <div class="navbar-nav ml-auto">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="all-courseClass.html">View All classes</a>
+              <a class="nav-link" aria-current="page" href="all-course.html">View All classes</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="my-courseClass.html">View My classes</a>
+              <a class="nav-link active" aria-current="page" href="my-course.html">View My classes</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" aria-current="page"href="javascript:logout()">Logout</a>
