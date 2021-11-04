@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>
+    One Stop Learning
+  </title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  <!-- JQuery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <!-- axios -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <!-- Common Script -->
+  <script src="../js/common.js"></script>
+  <script>
+    var urlObject = new URL(document.location.href);
+    var params = urlObject.searchParams;
+    var classId = params.get("id");
+
+    axios({
+      method: 'get',
+      url: backend_host + 'getEnrolledUser/' + classId
+    })
+    .then(function (response) {
+      console.log(response.data.data);
+      classData = response.data.data;
+
+      document.getElementById('courseTitle').innerText = classData.course_name;
+
+      contentBody = document.getElementById('content');
+
+      for (var user of classData.enrolled) {
+        var userBody = `<tr>`;
+        userBody += `<td>`+ user.id +`</td>`;
+        userBody += `<td>`+ user.name +`</td>`;
+        userBody += `<td>`+ user.status +`</td>`;
+        userBody += `<td><button class="btn btn-danger">Withdraw</button></td>`;
+        userBody += `</tr>`;
+
+        contentBody.innerHTML += userBody;
+      }
+
+      document.getElementById('enrollNewBtn').href = "enroll.html?id=" + classId
+
+    });
+  </script>
+</head>
+<body>
+  <h1 id="courseTitle"></h1>
+  <a id="enrollNewBtn" class="btn btn-primary">Enroll New Users</a>
+  <h3>List of Enrolled Users</h3>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Id (#)</th>
+        <th>Name</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody id="content">
+      
+    </tbody>
+  </table>
+</body>
+</html>
