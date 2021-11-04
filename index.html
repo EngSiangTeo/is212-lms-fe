@@ -23,17 +23,25 @@
         window.location.href = "./user/my-course.html";
       } else if (role == 'trainer') {
         window.location.href = "./trainer/my-course.html";
+      } else if (role == 'hr') {
+        window.location.href = "./hr/courses.html";
       }
     }
   </script>
 </head>
 <body>
   <h1>Learners</h1>
+  <button class="btn btn-primary" onclick="setUser('user',4)">Set Login Role as Learner [ID: 4]</button>
   <button class="btn btn-primary" onclick="setUser('user',5)">Set Login Role as Learner [ID: 5]</button>
   <button class="btn btn-primary" onclick="setUser('user',6)">Set Login Role as Learner [ID: 6]</button>
+  <button class="btn btn-primary" onclick="setUser('user',7)">Set Login Role as Learner [ID: 7]</button>
+  <button class="btn btn-primary" onclick="setUser('user',8)">Set Login Role as Learner [ID: 8]</button>
+  <button class="btn btn-primary" onclick="setUser('user',9)">Set Login Role as Learner [ID: 9]</button>
   <br><br>
   <h1>Trainers</h1>
   <button class="btn btn-primary" onclick="setUser('trainer',2)">Set Login Role as Trainer [ID: 2]</button>
   <button class="btn btn-primary" onclick="setUser('trainer',3)">Set Login Role as Trainer [ID: 3]</button>
+  <h1>HR</h1>
+  <button class="btn btn-primary" onclick="setUser('hr',1)">Set Login Role as HR [ID: 1]</button>
 </body>
 </html>

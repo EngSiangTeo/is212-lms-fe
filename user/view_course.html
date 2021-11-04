@@ -54,7 +54,7 @@
                     `+material.file_name+`
                   </p>
                   <div class="btn-group col-md-12">
-                    <button class="btn btn-outline-primary col-md-6" onclick="showCourseMaterial('`+material.file_url+`')">View</button>
+                    <button class="btn btn-outline-primary col-md-6" onclick="showCourseMaterial('`+material.file_url+`','`+material.type+`')">View</button>
                     <a target="_blank" href="`+ material.file_url+`" class="btn btn-outline-primary col-md-6">Download</a>
                   </div>
                 </div>
@@ -80,11 +80,15 @@
       }
     });
 
-    function showCourseMaterial(fileUrl) {
+    function showCourseMaterial(fileUrl, type) {
       var iframe = document.getElementById('courseMaterial');
       iframe.style.height = window.innerHeight+"px";
       iframe.style.width = "100%";
-      iframe.src = "https://view.officeapps.live.com/op/embed.aspx?src=" + fileUrl;
+      if (type == "docs") {
+        iframe.src = "https://view.officeapps.live.com/op/embed.aspx?src=" + fileUrl;
+      } else {
+        iframe.src = fileUrl; 
+      }
     }
   </script>
 </head>
@@ -125,8 +129,8 @@
       <div class="row">
         <div id="sectionContent" class="col-md-6">
         </div>
-        <div class="col-md-6">
-          <iframe id="courseMaterial" frameborder='0' style="width:0;height:0;" style="display:none;">
+        <div class="col-md-6" id="docsMaterial">
+          <iframe id="courseMaterial" frameborder='0' style="width:0;height:0;" ></iframe>
         </div>
       </div>
     </div>

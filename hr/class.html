@@ -20,51 +20,35 @@
   <!-- Common Script -->
   <script src="../js/common.js"></script>
   <script>
+    var urlObject = new URL(document.location.href);
+    var params = urlObject.searchParams;
+    var classId = params.get("id");
+
     axios({
       method: 'get',
-      url: backend_host + 'getAllClasses'
+      url: backend_host + 'getEnrolledUser/' + classId
     })
     .then(function (response) {
-      var courses = response.data.data;
-      var contentBody = document.getElementById('content');
-      console.log(courses);
-      for (var course of courses) {
-        var courseBody = `<div class="card" style='margin-bottom:10px;'>`;
+      console.log(response.data.data);
+      classData = response.data.data;
 
-        courseBody += `  <h5 class="card-header">` + course.name+ `</h5>`;
-        courseBody += `  <div class="card-body">`;
-        courseBody += `    <p class="card-text">` + course.description+`</p>
-                           <a class="btn btn-primary" data-bs-toggle="collapse" href="#classCollapse`+course.id+`" role="button" aria-expanded="false" aria-controls="classCollapse`+course.id+`">
-                           Show Classes
-                           </a>`;
-        courseBody += `    <div class="collapse" id="classCollapse`+course.id+`">`;
-        for (var classes of course.classes) {
-          var trainerName = "";
-          if (classes.trainer) {
-            trainerName = classes.trainer.name;
-          }
-          courseBody += `    <div class="card">`;
-          courseBody += `      <h6 class="card-header">Class available from `+ classes.start_date + ` till ` + classes.end_date +`</h6>`;
-          courseBody += `      <div class="card-body">`;
-          courseBody += `        <div class="container-fluid">`;
-          courseBody += `          <div class="row">`;
-          courseBody += `            <div class="card-title col-md-6">Instructor: ` + trainerName +`</div>`;
-          courseBody += `            <div class="btn-group col-md-6">`;
-          courseBody += `              <a href="class.html?id=`+classes.id+`" class="btn btn-outline-primary">Enroll Users</a>`;
-          courseBody += `              <a href="#" class="btn btn-outline-primary">Assign Trainer</a>`;
-          courseBody += `            <div class="btn-group">`;
-          courseBody += `            </div>`;
-          courseBody += `          </div>`;
-          courseBody += `        </div>`;
-          courseBody += `      </div>`;
-          courseBody += `    </div>`;
-        }
+      document.getElementById('courseTitle').innerText = classData.course_name;
 
-        courseBody += `    </div>
-                         </div>
-                       </div>`;
-        contentBody.innerHTML += courseBody;
+      contentBody = document.getElementById('content');
+
+      for (var user of classData.enrolled) {
+        var userBody = `<tr>`;
+        userBody += `<td>`+ user.id +`</td>`;
+        userBody += `<td>`+ user.name +`</td>`;
+        userBody += `<td>`+ user.status +`</td>`;
+        userBody += `<td><button class="btn btn-danger">Withdraw</button></td>`;
+        userBody += `</tr>`;
+
+        contentBody.innerHTML += userBody;
       }
+
+      document.getElementById('enrollNewBtn').href = "enroll.html?id=" + classId
+
     });
   </script>
 </head>
@@ -89,11 +73,23 @@
       </div>
     </div>
   </nav>
-  <div class="container-fluid">
-    <h1>List of Courses</h1>
-    <div id="content">
-      <!-- BACKEND CONTENT -->
-    </div>
+  <div class='container-fluid'>
+    <h1 id="courseTitle"></h1>
+    <a id="enrollNewBtn" class="btn btn-primary">Enroll New Users</a>
+    <h3>List of Enrolled Users</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Id (#)</th>
+          <th>Name</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="content">
+        
+      </tbody>
+    </table>
   </div>
 </body>
 </html>

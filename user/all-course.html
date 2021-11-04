@@ -22,6 +22,21 @@
   <script>
     const userId = localStorage.getItem('userId');
 
+    function apply(e,classId){
+      if (confirm('Are you sure?')){
+        axios({
+          method: 'post',
+          url: backend_host + 'applyToClass/' + classId + '/' + userId
+        })
+        .then(function (response) {
+          alert('Successfully applied!')
+          location.reload();
+        }).error(function (error) {
+          alert(error);
+        });
+      }
+    }
+
     axios({
       method: 'get',
       url: backend_host + 'getAvailableClasses/' + userId
@@ -49,7 +64,7 @@
           courseBody += `            <div class="card-title col-md-6">Instructor: ` + classes.trainer_name +`</div>`;
           courseBody += `            <div class="btn-group col-md-6">`;
           if (course.enrollabled) {
-            courseBody += `              <a href="#" class="btn btn-primary">Apply</a>`;
+            courseBody += `              <button class="btn btn-primary" onclick="apply(this,`+classes.id+`)">Apply</button>`;
           } else {
             courseBody += `              <p class="text-danger">`+course.reason+`</p>`;
           }
