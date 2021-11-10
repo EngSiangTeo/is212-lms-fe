@@ -31,7 +31,7 @@
         .then(function (response) {
           alert('Successfully applied!')
           location.reload();
-        }).error(function (error) {
+        }).catch(function (error) {
           alert(error);
         });
       }
