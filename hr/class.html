@@ -24,6 +24,36 @@
     var params = urlObject.searchParams;
     var classId = params.get("id");
 
+    function update(userId,status){
+      if (confirm('Want to add learner?')){
+        axios({
+          method: 'post',
+          url: backend_host + 'updateEnroll/' + classId + '/' + userId + '/' + status
+        })
+        .then(function (response) {
+          alert('Successfully added!')
+          location.reload();
+        }).catch(function (error) {
+          alert(error);
+        });
+      }
+    }
+
+    function withdraw(userId){
+      if (confirm('Want to withdraw learner?')){
+        axios({
+          method: 'post',
+          url: backend_host + 'withdrawLearner/' + classId + '/' + userId
+        })
+        .then(function (response) {
+          alert('Successfully withdrawn!')
+          location.reload();
+        }).catch(function (error) {
+          alert(error);
+        });
+      }
+    }
+
     axios({
       method: 'get',
       url: backend_host + 'getEnrolledUser/' + classId
@@ -41,8 +71,15 @@
         userBody += `<td>`+ user.id +`</td>`;
         userBody += `<td>`+ user.name +`</td>`;
         userBody += `<td>`+ user.status +`</td>`;
-        userBody += `<td><button class="btn btn-danger">Withdraw</button></td>`;
-        userBody += `</tr>`;
+        userBody += `<td>`;
+        if (user.status == "Applied") {
+          userBody += `<button class="btn btn-success" onclick="update('`+user.id+`','Enrolled')" style="margin-right:5px;">Enroll</button>`;
+          userBody += `<button class="btn btn-warning" onclick="update('`+user.id+`','Rejected')">Reject</button>`;
+        }else{
+          userBody += `<button class="btn btn-danger" onclick="withdraw('`+user.id+`')">Withdraw</button>`;
+        }
+        userBody += ` </td>
+                    </tr>`;
 
         contentBody.innerHTML += userBody;
       }
