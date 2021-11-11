@@ -62,7 +62,8 @@
       console.log(response.data.data);
       classData = response.data.data;
 
-      document.getElementById('courseTitle').innerText = classData.course_name;
+      document.getElementById('courseTitle').innerText = 'Class ' + classData.class_id + " : " + classData.course_name;
+      document.getElementById('capacity').innerText = classData.current + " / " + classData.capacity;
 
       contentBody = document.getElementById('content');
 
@@ -112,8 +113,9 @@
   </nav>
   <div class='container-fluid'>
     <h1 id="courseTitle"></h1>
-    <a id="enrollNewBtn" class="btn btn-primary">Enroll New Users</a>
+    <a id="enrollNewBtn" class="btn btn-primary">Enroll Learners</a>
     <h3>List of Enrolled Users</h3>
+    <p><b>Capacity: </b><span id='capacity'></span></p>
     <table class="table">
       <thead>
         <tr>
