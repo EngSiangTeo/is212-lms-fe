@@ -67,6 +67,11 @@
 
       contentBody = document.getElementById('content');
 
+      disabled = "";
+      if (classData.current >= classData.capacity){
+        disabled = "disabled";
+      }
+
       for (var user of classData.enrolled) {
         var userBody = `<tr>`;
         userBody += `<td>`+ user.id +`</td>`;
@@ -74,7 +79,7 @@
         userBody += `<td>`+ user.status +`</td>`;
         userBody += `<td>`;
         if (user.status == "Applied") {
-          userBody += `<button class="btn btn-success" onclick="update('`+user.id+`','Enrolled')" style="margin-right:5px;">Enroll</button>`;
+          userBody += `<button class="btn btn-success" onclick="update('`+user.id+`','Enrolled')" style="margin-right:5px;" `+disabled+`>Enroll</button>`;
           userBody += `<button class="btn btn-warning" onclick="update('`+user.id+`','Rejected')">Reject</button>`;
         }else{
           userBody += `<button class="btn btn-danger" onclick="withdraw('`+user.id+`')">Withdraw</button>`;
