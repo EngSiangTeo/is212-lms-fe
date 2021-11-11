@@ -77,7 +77,7 @@
           courseBody += `          </div>`;
           courseBody += `          <div class="container col-md-6">`;
           if (course.enrollabled) {
-            if (classes.current < clases.capacity){
+            if (classes.current < classes.capacity){
               courseBody += `              <button class="btn btn-primary w-100" onclick="apply(this,`+classes.id+`)">Apply</button>`;
             }else {
             courseBody += `              <p class="text-danger">Capacity Limit reached</p>`; 
