@@ -82,11 +82,11 @@
     <div id="content" class="col-6">
       <form onsubmit="createQuiz(event)">
         <h5>Quiz Type</h5>
-        <select class="form-select" style="margin: 20px 0px;" id="quizType">
+        <select class="form-select" style="margin: 20px 0px;" id="quizType" disabled="disabled">
           <option value="Ungraded" selected>Ungraded</option>
         </select>
         <div class="input-group mb-3">
-          <span class="input-group-text">Duration</span>
+          <span class="input-group-text">Duration (Min)</span>
           <input type="number" class="form-control" placeholder="Quiz Duration (mins)" id="quizDuration" required>
         </div>
         <input type="submit" class="btn btn-primary" value="Create Quiz">
