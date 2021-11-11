@@ -50,26 +50,42 @@
 
         courseBody += `  <h5 class="card-header">` + course.name+ `</h5>`;
         courseBody += `  <div class="card-body">`;
-        courseBody += `    <p class="card-text">` + course.description+`</p>
-                           <a class="btn btn-primary" data-bs-toggle="collapse" href="#classCollapse`+course.id+`" role="button" aria-expanded="false" aria-controls="classCollapse`+course.id+`">
+        courseBody += `    <p class="card-text">` + course.description+`</p>`
+        if (course.requirements.length > 0) {
+          courseBody += `  <p class="card-text"><b>Requirements:</b></p>`;
+          courseBody += `  <ul>`;
+          for (var req of course.requirements){
+            courseBody += `<li class="card-text">` + req.name+`</li>`;
+          }
+          courseBody += `  </ul>`;
+        }
+        courseBody += `    <a class="btn btn-primary" data-bs-toggle="collapse" href="#classCollapse`+course.id+`" role="button" aria-expanded="false" aria-controls="classCollapse`+course.id+`">
                            Show Classes
                            </a>`;
         courseBody += `    <div class="collapse" id="classCollapse`+course.id+`">`;
         for (var classes of course.classes) {
           courseBody += `    <div class="card">`;
-          courseBody += `      <h6 class="card-header">Class available from `+ classes.start_date + ` till ` + classes.end_date +`</h6>`;
+          courseBody += `      <h6 class="card-header">Class Details</h6>`;
           courseBody += `      <div class="card-body">`;
           courseBody += `        <div class="container-fluid">`;
           courseBody += `          <div class="row">`;
-          courseBody += `            <div class="card-title col-md-6">Instructor: ` + classes.trainer_name +`</div>`;
-          courseBody += `            <div class="btn-group col-md-6">`;
+          courseBody += `          <div class="container col-md-6">`;
+          courseBody += `            <div class="card-title">Instructor: <b>` + classes.trainer_name +`</b></div>`;
+          courseBody += `            <div class="card-title">Capacity: <b>`+classes.current+`/` + classes.capacity +`</b></div>`;
+          courseBody += `            <div class="card-title">Class available from <u>`+ classes.start_date + ` </u> till <u>` + classes.end_date +`</u></div>`;
+          courseBody += `            <div class="card-title">Enrollable from <u>`+ classes.enroll_start_date + `</u> till <u>` + classes.enroll_end_date +`</u></div>`;
+          courseBody += `          </div>`;
+          courseBody += `          <div class="container col-md-6">`;
           if (course.enrollabled) {
-            courseBody += `              <button class="btn btn-primary" onclick="apply(this,`+classes.id+`)">Apply</button>`;
+            if (classes.current < clases.capacity){
+              courseBody += `              <button class="btn btn-primary w-100" onclick="apply(this,`+classes.id+`)">Apply</button>`;
+            }else {
+            courseBody += `              <p class="text-danger">Capacity Limit reached</p>`; 
+            }
           } else {
             courseBody += `              <p class="text-danger">`+course.reason+`</p>`;
           }
-          courseBody += `            <div class="btn-group">`;
-          courseBody += `            </div>`;
+          courseBody += `          </div>`;
           courseBody += `          </div>`;
           courseBody += `        </div>`;
           courseBody += `      </div>`;
