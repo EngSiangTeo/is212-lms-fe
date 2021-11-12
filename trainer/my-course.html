@@ -36,7 +36,7 @@
       for (var courseClass of classes) {
         var courseClassBody = `<div class="card" style='margin-bottom:10px;'>`;
 
-        courseClassBody += `  <h5 class="card-header">` + courseClass.course.name+ `</h5>`;
+        courseClassBody += `  <h5 class="card-header">` + courseClass.course.name+ ` - Class `+ courseClass.id+`</h5>`;
         courseClassBody += `  <div class="card-body">`;
         courseClassBody += `    <p class="card-text">` + courseClass.course.description+`</p>
                                 <p class="card-text">Class available from `+ courseClass.start_date + ` till ` + courseClass.end_date +`</p>
