@@ -25,7 +25,7 @@
     var classId = params.get("id");
 
     function update(userId,status){
-      if (confirm('Want to add learner?')){
+      if (confirm('Want to set application as ' + status + '?')){
         axios({
           method: 'post',
           url: backend_host + 'updateEnroll/' + classId + '/' + userId + '/' + status
