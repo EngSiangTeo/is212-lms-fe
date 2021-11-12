@@ -33,7 +33,8 @@
       })
       .then(function (response) {
         alert('Successfully added!')
-        location.reload();
+        // location.reload();
+        location.href="class.html?id=" + classId;
       }).catch(function (error) {
         alert(error);
       });

@@ -66,10 +66,13 @@
       document.getElementById('capacity').innerText = classData.current + " / " + classData.capacity;
 
       contentBody = document.getElementById('content');
+      document.getElementById('enrollNewBtn').href = "enroll.html?id=" + classId;
 
       disabled = "";
       if (classData.current >= classData.capacity){
+        document.getElementById('enrollNewBtn').classList.add("disabled");
         disabled = "disabled";
+      }else{
       }
 
       for (var user of classData.enrolled) {
@@ -89,8 +92,6 @@
 
         contentBody.innerHTML += userBody;
       }
-
-      document.getElementById('enrollNewBtn').href = "enroll.html?id=" + classId
 
     });
   </script>
