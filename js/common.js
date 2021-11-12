@@ -1,4 +1,4 @@
-const backend_host = "https://e3g1t6.live/api/";
+const backend_host = "http://spm.test/api/";
 
 function logout() {
 	localStorage.clear();
