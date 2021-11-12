@@ -35,7 +35,7 @@
       for (var course of courses) {
         var courseBody = `<div class="card" style='margin-bottom:10px;'>`;
 
-        courseBody += `  <h5 class="card-header">` + course.course.name+ `</h5>`;
+        courseBody += `  <h5 class="card-header">` + course.course.name+ ` - Class `+course.class_id+`</h5>`;
         courseBody += `  <div class="card-body">`;
         courseBody += `    <p class="card-text">` + course.course.description+`</p>
                            <p class="card-text"> Status: <b>` + course.status+`</b></p>
